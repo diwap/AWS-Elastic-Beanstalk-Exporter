@@ -34,13 +34,13 @@ class CPU_Usage:
                 for health in environment_desc['InstanceHealthList']:
                     cpu_utilization = health['System']['CPUUtilization']
                     env_name = environment['EnvironmentName']
-                    metrics.append("awsebs_system_cpu_percentage_average{chart='system.cpu',family='cpu%s',dimension='user'} %s" % (env_name, cpu_utilization['User']))
-                    metrics.append("awsebs_system_cpu_percentage_average{chart='system.cpu',family='cpu%s',dimension='nice'} %s" % (env_name, cpu_utilization['Nice']))
-                    metrics.append("awsebs_system_cpu_percentage_average{chart='system.cpu',family='cpu%s',dimension='system'} %s" % (env_name, cpu_utilization['System']))
-                    metrics.append("awsebs_system_cpu_percentage_average{chart='system.cpu',family='cpu%s',dimension='idle'} %s" % (env_name, cpu_utilization['Idle']))
-                    metrics.append("awsebs_system_cpu_percentage_average{chart='system.cpu',family='cpu%s',dimension='iowait'} %s" % (env_name, cpu_utilization['IOWait']))
-                    metrics.append("awsebs_system_cpu_percentage_average{chart='system.cpu',family='cpu%s',dimension='irq'} %s" % (env_name, cpu_utilization['IRQ']))
-                    metrics.append("awsebs_system_cpu_percentage_average{chart='system.cpu',family='cpu%s',dimension='softirq'} %s" % (env_name, cpu_utilization['SoftIRQ']))
+                    metrics.append("awsebs_system_cpu_percentage_average{chart=\"system.cpu\",family=\"cpu%s\",dimension=\"user\"} %s" % (env_name, cpu_utilization['User']))
+                    metrics.append("awsebs_system_cpu_percentage_average{chart=\"system.cpu\",family=\"cpu%s\",dimension=\"nice\"} %s" % (env_name, cpu_utilization['Nice']))
+                    metrics.append("awsebs_system_cpu_percentage_average{chart=\"system.cpu\",family=\"cpu%s\",dimension=\"system\"} %s" % (env_name, cpu_utilization['System']))
+                    metrics.append("awsebs_system_cpu_percentage_average{chart=\"system.cpu\",family=\"cpu%s\",dimension=\"idle\"} %s" % (env_name, cpu_utilization['Idle']))
+                    metrics.append("awsebs_system_cpu_percentage_average{chart=\"system.cpu\",family=\"cpu%s\",dimension=\"iowait\"} %s" % (env_name, cpu_utilization['IOWait']))
+                    metrics.append("awsebs_system_cpu_percentage_average{chart=\"system.cpu\",family=\"cpu%s\",dimension=\"irq\"} %s" % (env_name, cpu_utilization['IRQ']))
+                    metrics.append("awsebs_system_cpu_percentage_average{chart=\"system.cpu\",family=\"cpu%s\",dimension=\"softirq\"} %s" % (env_name, cpu_utilization['SoftIRQ']))
             except Exception as e:
                 pass
 
