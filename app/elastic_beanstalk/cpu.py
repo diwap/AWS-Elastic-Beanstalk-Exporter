@@ -24,6 +24,8 @@ class CPU_Usage:
                         'All'
                     ])
                 
+                metrics.append("awsebs_system_instance_count{environment=\"%s\"} %s" % (environment['EnvironmentName'], 2))
+                
                 tags = {
                     "region": self.region_name,
                     "application": environment['ApplicationName'],
