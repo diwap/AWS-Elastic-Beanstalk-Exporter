@@ -1,5 +1,6 @@
 import boto3
 
+from message import slack
 
 
 class CPU_Usage:
@@ -38,10 +39,18 @@ class CPU_Usage:
                     env_name = environment['EnvironmentName']
                     instance_id = health['InstanceId']
                     health_status = health['HealthStatus']
+
                     if health_status == 'Ok':
                         health_status = 1
                     else:
                         health_status = 0
+                        message = f"*{instance_id}* health status: {health['HealthStatus']}. \n Reason: {health['Causes']}"
+                        slack.send_message(message)
+                    
+                        status = [True for i in health['Causes'] if "root file system is in use." in i]
+
+                        if status and status[0]:
+                            slack.send_message(f":warning: <!channel> *{instance_id}* might cause problem")
                     
                     metrics.append("awsebs_system_health_status{chart=\"system.health\",instance=\"%s\",environment=\"%s\"} %s" % (instance_id, env_name, health_status))
 
@@ -53,6 +62,7 @@ class CPU_Usage:
                     metrics.append("awsebs_system_cpu_percentage_average{chart=\"system.cpu\",instance=\"%s\",environment=\"%s\",dimension=\"irq\"} %s" % (instance_id, env_name, cpu_utilization['IRQ']))
                     metrics.append("awsebs_system_cpu_percentage_average{chart=\"system.cpu\",instance=\"%s\",environment=\"%s\",dimension=\"softirq\"} %s" % (instance_id, env_name, cpu_utilization['SoftIRQ']))
             except Exception as e:
+                print(e)
                 pass
 
         return metrics
