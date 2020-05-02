@@ -44,7 +44,7 @@ class CPU_Usage:
                         health_status = 1
                     else:
                         health_status = 0
-                        if health_status != 'Warning':
+                        if health['HealthStatus'] != 'Warning':
                             message = f"*{instance_id}* health status: {health['HealthStatus']}. \n Reason: {health['Causes']}"
                             slack.send_message(message)
                         
