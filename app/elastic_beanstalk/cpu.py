@@ -44,13 +44,14 @@ class CPU_Usage:
                         health_status = 1
                     else:
                         health_status = 0
-                        message = f"*{instance_id}* health status: {health['HealthStatus']}. \n Reason: {health['Causes']}"
-                        slack.send_message(message)
-                    
-                        status = [True for i in health['Causes'] if "root file system is in use." in i]
+                        if health_status != 'Warning':
+                            message = f"*{instance_id}* health status: {health['HealthStatus']}. \n Reason: {health['Causes']}"
+                            slack.send_message(message)
+                        
+                            status = [True for i in health['Causes'] if "root file system is in use." in i]
 
-                        if status and status[0]:
-                            slack.send_message(f":warning: <!channel> *{instance_id}* might cause problem")
+                            if status and status[0]:
+                                slack.send_message(f":warning: <!channel> *{instance_id}* might cause problem")
                     
                     metrics.append("awsebs_system_health_status{chart=\"system.health\",instance=\"%s\",environment=\"%s\"} %s" % (instance_id, env_name, health_status))
 
