@@ -1,6 +1,10 @@
+import os
+
 import boto3
 
 from message import slack
+
+ENV_NAME=os.getenv('ENV_TO_MONITOR')
 
 
 class CPU_Usage:
@@ -18,14 +22,17 @@ class CPU_Usage:
     def get_cpu_usage(self):
         metrics = []
         for environment in self.client.describe_environments()['Environments']:
-            try:
+            try:     
+                if not environment['EnvironmentName'] in ENV_NAME:
+                    break
+
                 environment_desc = self.client.describe_instances_health(
                     EnvironmentId=environment['EnvironmentId'],
                     AttributeNames=[
                         'All'
                     ])
                 
-                metrics.append("awsebs_system_instance_count{environment=\"%s\"} %s" % (environment['EnvironmentName'], 2))
+                metrics.append("awsebs_system_instance_count{environment=\"%s\"} %s" % (environment['EnvironmentName'], len(environment_desc['InstanceHealthList'])))
                 
                 tags = {
                     "region": self.region_name,
