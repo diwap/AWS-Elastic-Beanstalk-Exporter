@@ -41,7 +41,7 @@ class Retriever:
                     parsed_data = grok.match(d)
 
                     d_reformat = d.split('Reason:')
-                    d_reformat = "\nReason:".join(d)
+                    d_reformat = "\nReason:".join(d_reformat)
 
                     slack_url = None
 
