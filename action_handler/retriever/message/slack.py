@@ -3,9 +3,10 @@ import requests
 import json
 
 
-def send_message(message: str):
+def send_message(message: str, **kwargs):
+    slack_url = kwargs.get('slack_url')
     try:
-        url = os.getenv("SLACK_WEBHOOK_URL")
+        url = os.getenv("SLACK_WEBHOOK_URL", slack_url)
         if url:
             data = {
                 'text': message
