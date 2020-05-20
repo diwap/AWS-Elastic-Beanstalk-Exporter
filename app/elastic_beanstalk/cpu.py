@@ -1,8 +1,8 @@
 import os
+import requests
 
 import boto3
 
-from message import slack
 
 ENV_NAME=os.getenv('ENV_TO_MONITOR')
 
@@ -51,14 +51,10 @@ class CPU_Usage:
                         health_status = 1
                     else:
                         health_status = 0
-                        message = f"*{instance_id}* health status: {health['HealthStatus']}. \n Reason: {health['Causes']}"
-                        slack.send_message(message)
-                    
-                        status = [True for i in health['Causes'] if "root file system is in use." in i]
+                        message = f"*{instance_id}* {env_name} health status: {health['HealthStatus']} Reason: {health['Causes']}"
+                        post_url = f"http://localhost:5001/message?data={message}"
+                        requests.request("POST", post_url)
 
-                        if status and status[0]:
-                            slack.send_message(f":warning: <!channel> *{instance_id}* might cause problem")
-                    
                     metrics.append("awsebs_system_health_status{chart=\"system.health\",instance=\"%s\",environment=\"%s\"} %s" % (instance_id, env_name, health_status))
 
                     metrics.append("awsebs_system_cpu_percentage_average{chart=\"system.cpu\",instance=\"%s\",environment=\"%s\",dimension=\"user\"} %s" % (instance_id, env_name, cpu_utilization['User']))
@@ -73,4 +69,3 @@ class CPU_Usage:
                 pass
 
         return metrics
-
