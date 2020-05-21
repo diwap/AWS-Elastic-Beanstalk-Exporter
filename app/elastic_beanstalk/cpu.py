@@ -53,7 +53,11 @@ class CPU_Usage:
                         health_status = 0
                         message = f"*{instance_id}* {env_name} health status: {health['HealthStatus']} Reason: {health['Causes']}"
                         post_url = f"http://localhost:5001/message?data={message}"
-                        requests.request("POST", post_url)
+                        try:
+                            requests.request("POST", post_url)
+                        except Exception as e:
+                            print(e)
+                            pass
 
                     metrics.append("awsebs_system_health_status{chart=\"system.health\",instance=\"%s\",environment=\"%s\"} %s" % (instance_id, env_name, health_status))
 
