@@ -24,7 +24,7 @@ class CPU_Usage:
         for environment in self.client.describe_environments()['Environments']:
             try:     
                 if not environment['EnvironmentName'] in ENV_NAME:
-                    break
+                    continue
 
                 environment_desc = self.client.describe_instances_health(
                     EnvironmentId=environment['EnvironmentId'],
