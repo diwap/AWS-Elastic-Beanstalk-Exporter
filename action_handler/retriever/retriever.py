@@ -43,7 +43,7 @@ class Retriever:
                     d_reformat = d.split('Reason:')
                     d_reformat = "\nReason:".join(d_reformat)
 
-                    slack_url = None
+                    slack_url = os.getenv("SLACK_WEBHOOK_URL")
 
                     if parsed_data.get('status') in ["Degraded", "Severe"]:
                         send_to_slack(d_reformat, slack_url=slack_url)
@@ -69,4 +69,7 @@ class Retriever:
             return f.writelines(data[data_size:])
 
 if __name__ == "__main__":
-    Retriever().process_message()
+    while True:
+        print("Peeking file")
+        Retriever().process_message()
+        time.sleep(30)
